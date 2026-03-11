@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -17,7 +17,7 @@ function GoogleIcon() {
   );
 }
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirectTo') ?? '/dashboard';
@@ -63,14 +63,82 @@ export default function LoginPage() {
   };
 
   return (
+    <div className="glass rounded-2xl p-8">
+      <h1 className="text-xl font-semibold mb-6">Sign in to your account</h1>
+
+      {/* Google OAuth Button */}
+      <button
+        type="button"
+        onClick={handleGoogleLogin}
+        disabled={googleLoading || loading}
+        className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed text-gray-800 font-semibold py-3 rounded-lg transition-colors mb-4"
+      >
+        {googleLoading ? <Loader2 size={18} className="animate-spin" /> : <GoogleIcon />}
+        Continue with Google
+      </button>
+
+      {/* Divider */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex-1 h-px bg-gray-700" />
+        <span className="text-gray-500 text-xs">or sign in with email</span>
+        <div className="flex-1 h-px bg-gray-700" />
+      </div>
+
+      <form onSubmit={handleLogin} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">
+            Email address
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
+            placeholder="you@startup.com"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">
+            Password
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
+            placeholder="••••••••"
+          />
+        </div>
+
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">
+            {error}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={loading || googleLoading}
+          className="w-full bg-brand-600 hover:bg-brand-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+        >
+          {loading ? <><Loader2 size={16} className="animate-spin" /> Signing in…</> : 'Sign in'}
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-950 px-6">
-      {/* Background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-brand-600/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative w-full max-w-md">
-        {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 font-bold text-2xl">
             <span>⚡</span>
@@ -79,71 +147,9 @@ export default function LoginPage() {
           <p className="text-gray-400 mt-2">Welcome back</p>
         </div>
 
-        <div className="glass rounded-2xl p-8">
-          <h1 className="text-xl font-semibold mb-6">Sign in to your account</h1>
-
-          {/* Google OAuth Button */}
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            disabled={googleLoading || loading}
-            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed text-gray-800 font-semibold py-3 rounded-lg transition-colors mb-4"
-          >
-            {googleLoading ? <Loader2 size={18} className="animate-spin" /> : <GoogleIcon />}
-            Continue with Google
-          </button>
-
-          {/* Divider */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex-1 h-px bg-gray-700" />
-            <span className="text-gray-500 text-xs">or sign in with email</span>
-            <div className="flex-1 h-px bg-gray-700" />
-          </div>
-
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                Email address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
-                placeholder="you@startup.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
-                placeholder="••••••••"
-              />
-            </div>
-
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading || googleLoading}
-              className="w-full bg-brand-600 hover:bg-brand-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
-            >
-              {loading ? <><Loader2 size={16} className="animate-spin" /> Signing in…</> : 'Sign in'}
-            </button>
-          </form>
-        </div>
+        <Suspense fallback={<div className="glass rounded-2xl p-8 animate-pulse h-64" />}>
+          <LoginForm />
+        </Suspense>
 
         <p className="text-center text-gray-500 text-sm mt-6">
           Don&apos;t have an account?{' '}
