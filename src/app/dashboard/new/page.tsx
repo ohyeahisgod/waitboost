@@ -110,11 +110,12 @@ export default function NewProjectPage() {
 
   return (
     <div className="p-8 max-w-2xl mx-auto">
+      {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard" className="text-gray-500 hover:text-white transition-colors">
+        <Link href="/dashboard" className="text-slate-400 hover:text-slate-700 transition-colors">
           <ArrowLeft size={18} />
         </Link>
-        <h1 className="text-2xl font-bold">Create Waitlist</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Create Waitlist</h1>
       </div>
 
       {/* Steps */}
@@ -125,41 +126,41 @@ export default function NewProjectPage() {
               onClick={() => step === 2 && s === 1 && setStep(1)}
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
                 s === step
-                  ? 'bg-brand-600 text-white'
+                  ? 'bg-indigo-600 text-white'
                   : s < step
                   ? 'bg-green-500 text-white'
-                  : 'bg-gray-800 text-gray-500'
+                  : 'bg-slate-100 text-slate-400'
               }`}
             >
               {s}
             </button>
-            <span className={`text-sm ${s === step ? 'text-white' : 'text-gray-500'}`}>
+            <span className={`text-sm font-medium ${s === step ? 'text-slate-900' : 'text-slate-400'}`}>
               {s === 1 ? 'Basic Info' : 'Milestones'}
             </span>
-            {s < 2 && <ChevronRight size={14} className="text-gray-600 mx-1" />}
+            {s < 2 && <ChevronRight size={14} className="text-slate-300 mx-1" />}
           </div>
         ))}
       </div>
 
       <form onSubmit={handleSubmit}>
         {step === 1 && (
-          <div className="glass rounded-2xl p-6 space-y-5 animate-fade-in">
+          <div className="card p-6 space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Project name *</label>
+              <label className="label">Project name *</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => handleNameChange(e.target.value)}
                 required
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
+                className="input"
                 placeholder="My Awesome App"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">URL slug *</label>
-              <div className="flex items-center bg-gray-800 border border-gray-700 focus-within:border-brand-500 rounded-lg overflow-hidden">
-                <span className="px-3 py-3 text-gray-500 text-sm border-r border-gray-700 bg-gray-800/50 whitespace-nowrap">
+              <label className="label">URL slug *</label>
+              <div className="flex items-center bg-white border border-slate-200 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/10 rounded-lg overflow-hidden transition-all">
+                <span className="px-3 py-3 text-slate-400 text-sm border-r border-slate-200 bg-slate-50 whitespace-nowrap">
                   waitboost.com/w/
                 </span>
                 <input
@@ -167,58 +168,60 @@ export default function NewProjectPage() {
                   value={slug}
                   onChange={(e) => { setSlug(e.target.value); setSlugEdited(true); }}
                   required
-                  className="flex-1 bg-transparent px-3 py-3 text-sm text-white placeholder-gray-500 outline-none"
+                  className="flex-1 bg-transparent px-3 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none"
                   placeholder="my-awesome-app"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Headline *</label>
+              <label className="label">Headline *</label>
               <input
                 type="text"
                 value={headline}
                 onChange={(e) => setHeadline(e.target.value)}
                 required
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
+                className="input"
                 placeholder="The future of task management is here"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Subheadline</label>
+              <label className="label">Subheadline</label>
               <textarea
                 value={subheadline}
                 onChange={(e) => setSubheadline(e.target.value)}
                 rows={2}
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors resize-none"
+                className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-lg px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors resize-none"
                 placeholder="Describe what makes your product special..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">CTA button text</label>
+              <label className="label">CTA button text</label>
               <input
                 type="text"
                 value={ctaText}
                 onChange={(e) => setCtaText(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
+                className="input"
                 placeholder="Join the Waitlist"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Accent color</label>
-              <div className="flex items-center gap-3 flex-wrap">
+              <label className="label">Accent color</label>
+              <div className="flex items-center gap-3 flex-wrap mt-1">
                 {ACCENT_COLORS.map((c) => (
                   <button
                     key={c}
                     type="button"
                     onClick={() => setAccentColor(c)}
-                    className="w-8 h-8 rounded-full transition-transform hover:scale-110 border-2"
+                    className="w-8 h-8 rounded-full transition-transform hover:scale-110 border-2 shadow-sm"
                     style={{
                       backgroundColor: c,
                       borderColor: accentColor === c ? 'white' : 'transparent',
+                      outline: accentColor === c ? `2px solid ${c}` : 'none',
+                      outlineOffset: '2px',
                     }}
                   />
                 ))}
@@ -232,6 +235,10 @@ export default function NewProjectPage() {
               </div>
             </div>
 
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">{error}</div>
+            )}
+
             <button
               type="button"
               onClick={() => {
@@ -242,7 +249,7 @@ export default function NewProjectPage() {
                 setError('');
                 setStep(2);
               }}
-              className="w-full bg-brand-600 hover:bg-brand-500 text-white font-semibold py-3 rounded-lg transition-colors"
+              className="w-full btn-primary py-3 text-sm"
             >
               Next: Milestones →
             </button>
@@ -250,17 +257,17 @@ export default function NewProjectPage() {
         )}
 
         {step === 2 && (
-          <div className="glass rounded-2xl p-6 space-y-5 animate-fade-in">
+          <div className="card p-6 space-y-5">
             <div>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h2 className="font-semibold">Reward Milestones</h2>
-                  <p className="text-xs text-gray-400 mt-0.5">Incentivize referrals with rewards at signup counts</p>
+                  <h2 className="font-semibold text-slate-900">Reward Milestones</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">Incentivize referrals with rewards at signup counts</p>
                 </div>
                 <button
                   type="button"
                   onClick={addMilestone}
-                  className="flex items-center gap-1.5 text-sm text-brand-400 hover:text-brand-300 transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
                 >
                   <Plus size={14} /> Add
                 </button>
@@ -270,29 +277,29 @@ export default function NewProjectPage() {
                 {milestones.map((m, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div className="w-28">
-                      <label className="block text-xs text-gray-500 mb-1">Signups</label>
+                      <label className="block text-xs text-slate-500 font-medium mb-1">Signups</label>
                       <input
                         type="number"
                         min={1}
                         value={m.count}
                         onChange={(e) => updateMilestone(i, 'count', e.target.value)}
-                        className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 rounded-lg px-3 py-2 text-sm text-white outline-none"
+                        className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-lg px-3 py-2 text-sm text-slate-900 outline-none transition-colors"
                       />
                     </div>
                     <div className="flex-1">
-                      <label className="block text-xs text-gray-500 mb-1">Reward description</label>
+                      <label className="block text-xs text-slate-500 font-medium mb-1">Reward description</label>
                       <input
                         type="text"
                         value={m.reward}
                         onChange={(e) => updateMilestone(i, 'reward', e.target.value)}
-                        className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 outline-none"
+                        className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors"
                         placeholder="Early access + 20% off"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={() => removeMilestone(i)}
-                      className="mt-5 p-2 text-gray-600 hover:text-red-400 transition-colors"
+                      className="mt-5 p-2 text-slate-300 hover:text-red-500 transition-colors"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -301,30 +308,30 @@ export default function NewProjectPage() {
               </div>
 
               {milestones.length === 0 && (
-                <div className="text-center py-6 text-gray-500 text-sm border border-dashed border-gray-700 rounded-lg">
+                <div className="text-center py-6 text-slate-400 text-sm border border-dashed border-slate-200 rounded-lg">
                   No milestones yet. Add one to incentivize referrals.
                 </div>
               )}
             </div>
 
             {error && (
-              <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
                 {error}
               </div>
             )}
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 pt-1">
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="flex-1 border border-gray-700 hover:border-gray-500 text-gray-300 font-medium py-3 rounded-lg transition-colors"
+                className="flex-1 btn-secondary py-3 text-sm"
               >
                 ← Back
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-brand-600 hover:bg-brand-500 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="flex-1 btn-primary disabled:opacity-60 py-3 text-sm flex items-center justify-center gap-2"
               >
                 {loading ? <><Loader2 size={16} className="animate-spin" /> Creating…</> : '🚀 Launch Waitlist'}
               </button>

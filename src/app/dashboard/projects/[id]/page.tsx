@@ -112,7 +112,7 @@ export default function ProjectSettingsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Loader2 className="animate-spin text-brand-400" size={28} />
+        <Loader2 className="animate-spin text-indigo-500" size={28} />
       </div>
     );
   }
@@ -121,11 +121,11 @@ export default function ProjectSettingsPage() {
     <div className="p-8 max-w-2xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-2">
-        <Link href="/dashboard" className="text-gray-500 hover:text-white transition-colors">
+        <Link href="/dashboard" className="text-slate-400 hover:text-slate-700 transition-colors">
           <ArrowLeft size={18} />
         </Link>
-        <h1 className="text-2xl font-bold">{project?.name}</h1>
-        <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-green-500/10 text-green-400' : 'bg-gray-500/10 text-gray-500'}`}>
+        <h1 className="text-2xl font-bold text-slate-900">{project?.name}</h1>
+        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${isActive ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-500'}`}>
           {isActive ? 'Live' : 'Paused'}
         </span>
       </div>
@@ -135,30 +135,30 @@ export default function ProjectSettingsPage() {
         <Link
           href={`/w/${slug}`}
           target="_blank"
-          className="flex items-center gap-1.5 text-sm text-brand-400 hover:text-brand-300 transition-colors"
+          className="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700 transition-colors"
         >
           <ExternalLink size={13} /> View public page
         </Link>
-        <span className="text-gray-700">·</span>
+        <span className="text-slate-300">·</span>
         <Link
           href={`/dashboard/projects/${id}/analytics`}
-          className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors"
+          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors"
         >
           <BarChart3 size={13} /> Analytics
         </Link>
-        <span className="text-gray-700">·</span>
-        <button onClick={copyLink} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors">
-          {copied ? <CheckCircle2 size={13} className="text-green-400" /> : <Copy size={13} />}
+        <span className="text-slate-300">·</span>
+        <button onClick={copyLink} className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors">
+          {copied ? <CheckCircle2 size={13} className="text-green-600" /> : <Copy size={13} />}
           {copied ? 'Copied!' : 'Copy link'}
         </button>
       </div>
 
       {justCreated && (
-        <div className="mb-6 bg-green-500/10 border border-green-500/30 rounded-xl p-4 flex items-center gap-3">
+        <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
           <span className="text-2xl">🎉</span>
           <div>
-            <p className="font-semibold text-green-300">Your waitlist is live!</p>
-            <p className="text-sm text-green-400/70">
+            <p className="font-semibold text-green-800">Your waitlist is live!</p>
+            <p className="text-sm text-green-700">
               Share <span className="font-mono">/w/{slug}</span> to start collecting signups.
             </p>
           </div>
@@ -167,79 +167,84 @@ export default function ProjectSettingsPage() {
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Basic settings */}
-        <div className="glass rounded-2xl p-6 space-y-5">
-          <h2 className="font-semibold text-lg">Page Settings</h2>
+        <div className="card p-6 space-y-5">
+          <h2 className="font-semibold text-slate-900 text-base">Page Settings</h2>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Project name</label>
+            <label className="label">Project name</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} required
-              className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors" />
+              className="input" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">URL slug</label>
-            <div className="flex items-center bg-gray-800 border border-gray-700 focus-within:border-brand-500 rounded-lg overflow-hidden">
-              <span className="px-3 py-3 text-gray-500 text-sm border-r border-gray-700 bg-gray-800/50 whitespace-nowrap">waitboost.com/w/</span>
+            <label className="label">URL slug</label>
+            <div className="flex items-center bg-white border border-slate-200 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/10 rounded-lg overflow-hidden transition-all">
+              <span className="px-3 py-3 text-slate-400 text-sm border-r border-slate-200 bg-slate-50 whitespace-nowrap">waitboost.com/w/</span>
               <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} required
-                className="flex-1 bg-transparent px-3 py-3 text-sm text-white outline-none" />
+                className="flex-1 bg-transparent px-3 py-3 text-sm text-slate-900 outline-none" />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Headline</label>
+            <label className="label">Headline</label>
             <input type="text" value={headline} onChange={(e) => setHeadline(e.target.value)} required
-              className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors" />
+              className="input" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Subheadline</label>
+            <label className="label">Subheadline</label>
             <textarea value={subheadline} onChange={(e) => setSubheadline(e.target.value)} rows={2}
-              className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors resize-none" />
+              className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-lg px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors resize-none" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">CTA button text</label>
+            <label className="label">CTA button text</label>
             <input type="text" value={ctaText} onChange={(e) => setCtaText(e.target.value)}
-              className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors" />
+              className="input" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Accent color</label>
-            <div className="flex items-center gap-3 flex-wrap">
+            <label className="label">Accent color</label>
+            <div className="flex items-center gap-3 flex-wrap mt-1">
               {ACCENT_COLORS.map((c) => (
                 <button key={c} type="button" onClick={() => setAccentColor(c)}
-                  className="w-8 h-8 rounded-full transition-transform hover:scale-110 border-2"
-                  style={{ backgroundColor: c, borderColor: accentColor === c ? 'white' : 'transparent' }} />
+                  className="w-8 h-8 rounded-full transition-transform hover:scale-110 border-2 shadow-sm"
+                  style={{
+                    backgroundColor: c,
+                    borderColor: accentColor === c ? 'white' : 'transparent',
+                    outline: accentColor === c ? `2px solid ${c}` : 'none',
+                    outlineOffset: '2px',
+                  }} />
               ))}
               <input type="color" value={accentColor} onChange={(e) => setAccentColor(e.target.value)}
                 className="w-8 h-8 rounded-full cursor-pointer bg-transparent border-0" />
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-white/5">
+          <div className="flex items-center justify-between pt-3 border-t border-slate-100">
             <div>
-              <p className="text-sm font-medium">Status</p>
-              <p className="text-xs text-gray-500">Toggle whether signups are open</p>
+              <p className="text-sm font-medium text-slate-900">Status</p>
+              <p className="text-xs text-slate-500 mt-0.5">Toggle whether signups are open</p>
             </div>
             <button
               type="button"
               onClick={() => setIsActive(!isActive)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isActive ? 'bg-brand-600' : 'bg-gray-700'}`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isActive ? 'bg-indigo-600' : 'bg-slate-200'}`}
             >
-              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isActive ? 'translate-x-6' : 'translate-x-1'}`} />
+              <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${isActive ? 'translate-x-6' : 'translate-x-1'}`} />
             </button>
           </div>
         </div>
 
         {/* Milestones */}
-        <div className="glass rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="card p-6">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h2 className="font-semibold">Reward Milestones</h2>
-              <p className="text-xs text-gray-400 mt-0.5">Displayed as progress goals on the waitlist page</p>
+              <h2 className="font-semibold text-slate-900">Reward Milestones</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Displayed as progress goals on the waitlist page</p>
             </div>
             <button type="button" onClick={() => setMilestones([...milestones, { count: 0, reward: '' }])}
-              className="flex items-center gap-1.5 text-sm text-brand-400 hover:text-brand-300 transition-colors">
+              className="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors">
               <Plus size={14} /> Add
             </button>
           </div>
@@ -248,40 +253,46 @@ export default function ProjectSettingsPage() {
             {milestones.map((m, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="w-28">
-                  <label className="block text-xs text-gray-500 mb-1">Signups</label>
+                  <label className="block text-xs text-slate-500 font-medium mb-1">Signups</label>
                   <input type="number" min={1} value={m.count}
                     onChange={(e) => { const u = [...milestones]; u[i] = { ...u[i], count: Number(e.target.value) }; setMilestones(u); }}
-                    className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 rounded-lg px-3 py-2 text-sm text-white outline-none" />
+                    className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-lg px-3 py-2 text-sm text-slate-900 outline-none transition-colors" />
                 </div>
                 <div className="flex-1">
-                  <label className="block text-xs text-gray-500 mb-1">Reward</label>
+                  <label className="block text-xs text-slate-500 font-medium mb-1">Reward</label>
                   <input type="text" value={m.reward}
                     onChange={(e) => { const u = [...milestones]; u[i] = { ...u[i], reward: e.target.value }; setMilestones(u); }}
-                    className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 outline-none"
+                    className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors"
                     placeholder="Early access + 20% off" />
                 </div>
                 <button type="button" onClick={() => setMilestones(milestones.filter((_, idx) => idx !== i))}
-                  className="mt-5 p-2 text-gray-600 hover:text-red-400 transition-colors">
+                  className="mt-5 p-2 text-slate-300 hover:text-red-500 transition-colors">
                   <Trash2 size={14} />
                 </button>
               </div>
             ))}
           </div>
+
+          {milestones.length === 0 && (
+            <div className="text-center py-6 text-slate-400 text-sm border border-dashed border-slate-200 rounded-lg mt-2">
+              No milestones yet. Add one to incentivize referrals.
+            </div>
+          )}
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">{error}</div>
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">{error}</div>
         )}
 
         <div className="flex gap-3">
           <button type="submit" disabled={saving}
-            className="flex-1 bg-brand-600 hover:bg-brand-500 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+            className="flex-1 btn-primary disabled:opacity-60 py-3 text-sm flex items-center justify-center gap-2">
             {saving ? <><Loader2 size={16} className="animate-spin" /> Saving…</> :
-             saved ? <><CheckCircle2 size={16} className="text-green-400" /> Saved!</> :
+             saved ? <><CheckCircle2 size={16} /> Saved!</> :
              <><Save size={16} /> Save Changes</>}
           </button>
           <button type="button" onClick={handleDelete}
-            className="px-4 py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-lg text-sm font-medium transition-colors">
+            className="px-5 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-[10px] text-sm font-medium transition-colors">
             Delete
           </button>
         </div>
