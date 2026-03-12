@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { LayoutDashboard, Plus, Crown } from 'lucide-react';
+import { LayoutDashboard, Plus, Crown, Zap } from 'lucide-react';
 import DashboardSignOut from '@/components/DashboardSignOut';
 
 export default async function DashboardLayout({
@@ -11,7 +11,6 @@ export default async function DashboardLayout({
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-
   if (!user) redirect('/auth/login');
 
   const { data: profile } = await supabase
@@ -20,50 +19,54 @@ export default async function DashboardLayout({
     .eq('id', user.id)
     .single();
 
+  const initials = (profile?.full_name ?? profile?.email ?? 'U')[0].toUpperCase();
+
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col fixed inset-y-0 left-0 z-30">
+
+      {/* ── Sidebar ── */}
+      <aside className="w-60 bg-white border-r border-slate-200 flex flex-col fixed inset-y-0 left-0 z-30 shadow-[1px_0_0_0_rgb(226_232_240)]">
+
         {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b border-slate-200">
-          <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg">
-            <span>⚡</span>
-            <span className="gradient-text">WaitBoost</span>
+        <div className="h-14 flex items-center px-5 border-b border-slate-200">
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0">
+              <Zap size={14} className="text-white" fill="white" />
+            </div>
+            <span className="font-bold text-slate-900 text-[15px] tracking-tight">WaitBoost</span>
           </Link>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 p-3 space-y-0.5">
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-          >
-            <LayoutDashboard size={16} className="text-slate-400" />
+        {/* Navigation */}
+        <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-3 pt-2 pb-1">Main</p>
+          <Link href="/dashboard"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors group">
+            <LayoutDashboard size={15} className="text-slate-400 group-hover:text-slate-600 transition-colors" />
             <span>Dashboard</span>
           </Link>
-          <Link
-            href="/dashboard/new"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-          >
-            <Plus size={16} className="text-slate-400" />
+          <Link href="/dashboard/new"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors group">
+            <Plus size={15} className="text-slate-400 group-hover:text-slate-600 transition-colors" />
             <span>New Waitlist</span>
           </Link>
         </nav>
 
-        {/* Plan badge */}
+        {/* Upgrade CTA for free plan */}
         {profile?.plan === 'free' && (
-          <div className="mx-3 mb-3">
-            <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-center">
-              <Crown size={18} className="text-amber-500 mx-auto mb-2" />
-              <p className="text-xs text-slate-600 mb-3 leading-relaxed">
-                Upgrade for unlimited projects &amp; CSV export
+          <div className="px-3 pb-3">
+            <div className="bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-100 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Crown size={14} className="text-amber-500" />
+                <span className="text-xs font-semibold text-slate-700">Upgrade to Pro</span>
+              </div>
+              <p className="text-xs text-slate-500 leading-relaxed mb-3">
+                Unlimited projects, CSV export &amp; custom branding.
               </p>
               <form action="/api/stripe/checkout/upgrade" method="POST">
-                <button
-                  type="submit"
-                  className="w-full text-xs btn-primary py-2 px-3"
-                >
-                  Upgrade to Pro
+                <button type="submit"
+                  className="w-full text-xs bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition-colors">
+                  Upgrade — from $9/mo
                 </button>
               </form>
             </div>
@@ -71,33 +74,33 @@ export default async function DashboardLayout({
         )}
 
         {profile?.plan === 'pro' && (
-          <div className="mx-3 mb-3">
-            <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-xl p-3 text-xs text-amber-700">
-              <Crown size={14} className="text-amber-500 shrink-0" />
-              <span className="font-medium">Pro Plan</span>
+          <div className="px-3 pb-3">
+            <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2.5">
+              <Crown size={13} className="text-amber-500 shrink-0" />
+              <span className="text-xs font-semibold text-amber-700">Pro Plan Active</span>
             </div>
           </div>
         )}
 
-        {/* User */}
+        {/* User footer */}
         <div className="border-t border-slate-200 p-3">
-          <div className="flex items-center gap-3 mb-2 px-2 py-1.5">
-            <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white shrink-0">
-              {(profile?.full_name ?? profile?.email ?? 'U')[0].toUpperCase()}
+          <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg mb-1">
+            <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white shrink-0">
+              {initials}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-slate-900 truncate">
+              <p className="text-[13px] font-semibold text-slate-800 truncate leading-tight">
                 {profile?.full_name ?? 'User'}
               </p>
-              <p className="text-xs text-slate-400 truncate">{profile?.email}</p>
+              <p className="text-[11px] text-slate-400 truncate">{profile?.email}</p>
             </div>
           </div>
           <DashboardSignOut />
         </div>
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 ml-64 min-h-screen">
+      {/* ── Main content ── */}
+      <main className="flex-1 ml-60 min-h-screen">
         {children}
       </main>
     </div>

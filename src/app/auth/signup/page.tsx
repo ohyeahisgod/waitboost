@@ -33,27 +33,20 @@ export default function SignupPage() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: `${location.origin}/auth/callback?next=/dashboard`,
-      },
+      options: { redirectTo: `${location.origin}/auth/callback?next=/dashboard` },
     });
-    if (error) {
-      setError(error.message);
-      setGoogleLoading(false);
-    }
+    if (error) { setError(error.message); setGoogleLoading(false); }
   };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
     if (password.length < 8) {
       setError('Password must be at least 8 characters.');
       setLoading(false);
       return;
     }
-
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({
       email,
@@ -63,29 +56,29 @@ export default function SignupPage() {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
+    if (error) { setError(error.message); setLoading(false); return; }
     setSuccess(true);
     setLoading(false);
   };
 
   if (success) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-950 px-6">
-        <div className="text-center max-w-md">
-          <CheckCircle2 size={56} className="text-green-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-2">Check your email</h1>
-          <p className="text-gray-400">
-            We sent a confirmation link to <span className="text-white">{email}</span>.
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-6">
+        <div className="w-full max-w-md text-center">
+          <div className="w-16 h-16 bg-green-50 border border-green-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 size={32} className="text-green-600" />
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">Check your email</h1>
+          <p className="text-slate-500 mb-6 leading-relaxed">
+            We sent a confirmation link to{' '}
+            <span className="text-slate-900 font-semibold">{email}</span>.{' '}
             Click it to activate your account and start building your waitlist.
           </p>
-          <Link href="/auth/login" className="mt-6 inline-block text-brand-400 hover:text-brand-300 text-sm">
-            Back to sign in
+          <Link
+            href="/auth/login"
+            className="text-sm text-indigo-600 hover:text-indigo-700 font-semibold"
+          >
+            ← Back to sign in
           </Link>
         </div>
       </div>
@@ -93,107 +86,117 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-950 px-6">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-brand-600/10 rounded-full blur-3xl" />
+    <div className="min-h-screen bg-slate-50 flex">
+      {/* Left branding panel */}
+      <div className="hidden lg:flex lg:w-[480px] xl:w-[560px] flex-col bg-slate-900 p-12 relative overflow-hidden shrink-0">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-indigo-600/20 blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-violet-600/15 blur-3xl" />
+        </div>
+        <div className="relative">
+          <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl text-white">
+            <span>⚡</span>
+            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">WaitBoost</span>
+          </Link>
+        </div>
+        <div className="relative flex-1 flex flex-col justify-center">
+          <p className="text-3xl font-bold text-white leading-snug mb-4">
+            Launch your waitlist in<br />
+            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">under 3 minutes</span>
+          </p>
+          <p className="text-slate-400 text-base leading-relaxed mb-10">
+            Set up viral referral mechanics and start collecting signups before your next coffee break.
+          </p>
+          {/* Feature checklist */}
+          <div className="space-y-3">
+            {[
+              'Referral leaderboard to drive word-of-mouth',
+              'Milestone rewards that unlock at signup counts',
+              'Real-time analytics dashboard',
+              'Custom branding — your colors, your domain',
+            ].map(f => (
+              <div key={f} className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center shrink-0">
+                  <span className="text-indigo-400 text-xs">✓</span>
+                </div>
+                <span className="text-sm text-slate-300">{f}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="relative">
+          <p className="text-slate-600 text-xs">© 2025 WaitBoost. All rights reserved.</p>
+        </div>
       </div>
 
-      <div className="relative w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 font-bold text-2xl">
+      {/* Right form panel */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
+        <div className="lg:hidden mb-8 text-center">
+          <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl">
             <span>⚡</span>
             <span className="gradient-text">WaitBoost</span>
           </Link>
-          <p className="text-gray-400 mt-2">Launch your first waitlist in minutes</p>
         </div>
+        <div className="w-full max-w-[400px]">
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-slate-900">Create your account</h1>
+            <p className="text-slate-500 text-sm mt-1">Start building your waitlist for free</p>
+          </div>
 
-        <div className="glass rounded-2xl p-8">
-          <h1 className="text-xl font-semibold mb-6">Create your account</h1>
-
-          {/* Google OAuth Button */}
-          <button
-            type="button"
-            onClick={handleGoogleSignup}
-            disabled={googleLoading || loading}
-            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed text-gray-800 font-semibold py-3 rounded-lg transition-colors mb-4"
-          >
+          {/* Google OAuth */}
+          <button type="button" onClick={handleGoogleSignup} disabled={googleLoading || loading}
+            className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 disabled:opacity-60 disabled:cursor-not-allowed text-slate-700 font-semibold py-3 rounded-xl transition-all shadow-sm text-sm mb-5">
             {googleLoading ? <Loader2 size={18} className="animate-spin" /> : <GoogleIcon />}
             Continue with Google
           </button>
 
-          {/* Divider */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex-1 h-px bg-gray-700" />
-            <span className="text-gray-500 text-xs">or sign up with email</span>
-            <div className="flex-1 h-px bg-gray-700" />
+          <div className="flex items-center gap-3 mb-5">
+            <div className="flex-1 h-px bg-slate-200" />
+            <span className="text-slate-400 text-xs">or sign up with email</span>
+            <div className="flex-1 h-px bg-slate-200" />
           </div>
 
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Full name</label>
-              <input
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
-                placeholder="Jane Smith"
-              />
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Full name</label>
+              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} required autoComplete="name"
+                className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all"
+                placeholder="Jane Smith" />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Email address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
-                placeholder="you@startup.com"
-              />
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email"
+                className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all"
+                placeholder="you@startup.com" />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={8}
-                className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
-                placeholder="Min. 8 characters"
-              />
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete="new-password"
+                className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all"
+                placeholder="Min. 8 characters" />
             </div>
 
             {error && (
-              <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">
-                {error}
-              </div>
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">{error}</div>
             )}
 
-            <button
-              type="submit"
-              disabled={loading || googleLoading}
-              className="w-full bg-brand-600 hover:bg-brand-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
-            >
+            <button type="submit" disabled={loading || googleLoading}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm shadow-sm shadow-indigo-200">
               {loading ? <><Loader2 size={16} className="animate-spin" /> Creating account…</> : 'Create free account'}
             </button>
+
+            <p className="text-center text-slate-400 text-xs">
+              By signing up you agree to our{' '}
+              <a href="#" className="text-slate-500 hover:text-slate-700">Terms</a> and{' '}
+              <a href="#" className="text-slate-500 hover:text-slate-700">Privacy Policy</a>.
+            </p>
           </form>
 
-          <p className="text-center text-gray-500 text-xs mt-4">
-            By signing up you agree to our{' '}
-            <a href="#" className="text-gray-400 hover:text-white">Terms</a> and{' '}
-            <a href="#" className="text-gray-400 hover:text-white">Privacy Policy</a>.
+          <p className="text-center text-slate-500 text-sm mt-6">
+            Already have an account?{' '}
+            <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-700 font-semibold">Sign in</Link>
           </p>
         </div>
-
-        <p className="text-center text-gray-500 text-sm mt-6">
-          Already have an account?{' '}
-          <Link href="/auth/login" className="text-brand-400 hover:text-brand-300 font-medium">
-            Sign in
-          </Link>
-        </p>
       </div>
     </div>
   );

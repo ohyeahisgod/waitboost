@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="bg-gray-950 text-gray-100 min-h-screen font-sans">
+      <body className="bg-white text-slate-900 min-h-screen font-sans">
         {children}
       </body>
     </html>

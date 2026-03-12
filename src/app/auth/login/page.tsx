@@ -21,7 +21,6 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirectTo') ?? '/dashboard';
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,16 +31,9 @@ function LoginForm() {
     e.preventDefault();
     setLoading(true);
     setError('');
-
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
+    if (error) { setError(error.message); setLoading(false); return; }
     router.push(redirectTo);
     router.refresh();
   };
@@ -52,78 +44,44 @@ function LoginForm() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: `${location.origin}/auth/callback?next=${redirectTo}`,
-      },
+      options: { redirectTo: `${location.origin}/auth/callback?next=${redirectTo}` },
     });
-    if (error) {
-      setError(error.message);
-      setGoogleLoading(false);
-    }
+    if (error) { setError(error.message); setGoogleLoading(false); }
   };
 
   return (
-    <div className="glass rounded-2xl p-8">
-      <h1 className="text-xl font-semibold mb-6">Sign in to your account</h1>
-
-      {/* Google OAuth Button */}
-      <button
-        type="button"
-        onClick={handleGoogleLogin}
-        disabled={googleLoading || loading}
-        className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed text-gray-800 font-semibold py-3 rounded-lg transition-colors mb-4"
-      >
+    <div className="space-y-5">
+      <button type="button" onClick={handleGoogleLogin} disabled={googleLoading || loading}
+        className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 disabled:opacity-60 disabled:cursor-not-allowed text-slate-700 font-semibold py-3 rounded-xl transition-all shadow-sm text-sm">
         {googleLoading ? <Loader2 size={18} className="animate-spin" /> : <GoogleIcon />}
         Continue with Google
       </button>
-
-      {/* Divider */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className="flex-1 h-px bg-gray-700" />
-        <span className="text-gray-500 text-xs">or sign in with email</span>
-        <div className="flex-1 h-px bg-gray-700" />
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px bg-slate-200" />
+        <span className="text-slate-400 text-xs">or sign in with email</span>
+        <div className="flex-1 h-px bg-slate-200" />
       </div>
-
       <form onSubmit={handleLogin} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1.5">
-            Email address
-          </label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
-            placeholder="you@startup.com"
-          />
+          <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email"
+            className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all"
+            placeholder="you@startup.com" />
         </div>
-
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1.5">
-            Password
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full bg-gray-800 border border-gray-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors"
-            placeholder="••••••••"
-          />
-        </div>
-
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">
-            {error}
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="block text-sm font-medium text-slate-700">Password</label>
+            <a href="#" className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Forgot password?</a>
           </div>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password"
+            className="w-full bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all"
+            placeholder="••••••••" />
+        </div>
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">{error}</div>
         )}
-
-        <button
-          type="submit"
-          disabled={loading || googleLoading}
-          className="w-full bg-brand-600 hover:bg-brand-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
-        >
+        <button type="submit" disabled={loading || googleLoading}
+          className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm shadow-sm shadow-indigo-200">
           {loading ? <><Loader2 size={16} className="animate-spin" /> Signing in…</> : 'Sign in'}
         </button>
       </form>
@@ -133,30 +91,75 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-950 px-6">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-brand-600/10 rounded-full blur-3xl" />
+    <div className="min-h-screen bg-slate-50 flex">
+      {/* Left branding panel */}
+      <div className="hidden lg:flex lg:w-[480px] xl:w-[560px] flex-col bg-slate-900 p-12 relative overflow-hidden shrink-0">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-indigo-600/20 blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-violet-600/15 blur-3xl" />
+        </div>
+        <div className="relative">
+          <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl text-white">
+            <span>⚡</span>
+            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">WaitBoost</span>
+          </Link>
+        </div>
+        <div className="relative flex-1 flex flex-col justify-center">
+          <p className="text-3xl font-bold text-white leading-snug mb-4">
+            Turn your waitlist into a<br />
+            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">viral growth engine</span>
+          </p>
+          <p className="text-slate-400 text-base leading-relaxed mb-10">
+            Referral leaderboards, milestone rewards, and real-time analytics — everything you need to launch with momentum.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { value: '12,400+', label: 'Waitlist signups collected' },
+              { value: '38%',     label: 'Average referral rate' },
+              { value: '3 min',   label: 'Average setup time' },
+              { value: '100%',    label: 'Free to start' },
+            ].map(s => (
+              <div key={s.label} className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <p className="text-xl font-bold text-white mb-0.5">{s.value}</p>
+                <p className="text-xs text-slate-400">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="relative">
+          <p className="text-slate-600 text-xs">© 2025 WaitBoost. All rights reserved.</p>
+        </div>
       </div>
 
-      <div className="relative w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 font-bold text-2xl">
+      {/* Right form panel */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
+        <div className="lg:hidden mb-8 text-center">
+          <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl">
             <span>⚡</span>
             <span className="gradient-text">WaitBoost</span>
           </Link>
-          <p className="text-gray-400 mt-2">Welcome back</p>
         </div>
-
-        <Suspense fallback={<div className="glass rounded-2xl p-8 animate-pulse h-64" />}>
-          <LoginForm />
-        </Suspense>
-
-        <p className="text-center text-gray-500 text-sm mt-6">
-          Don&apos;t have an account?{' '}
-          <Link href="/auth/signup" className="text-brand-400 hover:text-brand-300 font-medium">
-            Sign up free
-          </Link>
-        </p>
+        <div className="w-full max-w-[400px]">
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-slate-900">Welcome back</h1>
+            <p className="text-slate-500 text-sm mt-1">Sign in to your WaitBoost account</p>
+          </div>
+          <Suspense fallback={
+            <div className="space-y-4 animate-pulse">
+              <div className="h-12 bg-slate-100 rounded-xl" />
+              <div className="h-px bg-slate-200" />
+              <div className="h-12 bg-slate-100 rounded-xl" />
+              <div className="h-12 bg-slate-100 rounded-xl" />
+              <div className="h-12 bg-indigo-100 rounded-xl" />
+            </div>
+          }>
+            <LoginForm />
+          </Suspense>
+          <p className="text-center text-slate-500 text-sm mt-6">
+            Don&apos;t have an account?{' '}
+            <Link href="/auth/signup" className="text-indigo-600 hover:text-indigo-700 font-semibold">Sign up free</Link>
+          </p>
+        </div>
       </div>
     </div>
   );
