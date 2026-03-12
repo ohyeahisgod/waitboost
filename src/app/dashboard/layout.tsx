@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { LayoutDashboard, Plus, Crown, Zap } from 'lucide-react';
+import { LayoutDashboard, Plus, Crown } from 'lucide-react';
 import DashboardSignOut from '@/components/DashboardSignOut';
 
 export default async function DashboardLayout({
@@ -30,9 +31,7 @@ export default async function DashboardLayout({
         {/* Logo */}
         <div className="h-14 flex items-center px-5 border-b border-slate-200">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0">
-              <Zap size={14} className="text-white" fill="white" />
-            </div>
+            <Image src="/logo.svg" alt="WaitBoost" width={24} height={29} priority />
             <span className="font-bold text-slate-900 text-[15px] tracking-tight">WaitBoost</span>
           </Link>
         </div>

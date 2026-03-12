@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
   ArrowRight, Check, ChevronDown, ChevronUp,
@@ -8,6 +9,15 @@ import {
   Share2, TrendingUp, Menu, X,
   UserPlus, Target, Link2,
 } from 'lucide-react'
+
+function WaitBoostLogo({ size = 22, textClass = 'text-slate-900' }: { size?: number; textClass?: string }) {
+  return (
+    <span className="inline-flex items-center gap-2">
+      <Image src="/logo.svg" alt="" width={size} height={Math.round(size * 1.2)} priority />
+      <span className={`font-semibold text-[15px] tracking-tight ${textClass}`}>WaitBoost</span>
+    </span>
+  )
+}
 
 // ─────────────────────────────────────────────────────────
 // DASHBOARD MOCKUP
@@ -273,10 +283,7 @@ export default function Home() {
           {/* Left: logo + nav */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-              <div className="w-6 h-6 bg-slate-900 rounded-[6px] flex items-center justify-center">
-                <Zap className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-              </div>
-              <span className="font-semibold text-slate-900 text-[15px] tracking-tight">WaitBoost</span>
+              <WaitBoostLogo size={22} />
             </Link>
             <nav className="hidden md:flex items-center">
               {[
@@ -811,10 +818,7 @@ export default function Home() {
             {/* Brand */}
             <div className="col-span-2">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-6 h-6 bg-slate-900 rounded-[6px] flex items-center justify-center">
-                  <Zap className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-                </div>
-                <span className="font-semibold text-slate-900 text-[15px] tracking-tight">WaitBoost</span>
+                <WaitBoostLogo size={22} />
               </div>
               <p className="text-sm text-slate-400 leading-relaxed max-w-[220px]">
                 The referral-powered waitlist platform for founders and product teams.

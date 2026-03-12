@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 
@@ -94,9 +95,9 @@ export default function SignupPage() {
           <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-violet-600/15 blur-3xl" />
         </div>
         <div className="relative">
-          <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl text-white">
-            <span>⚡</span>
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">WaitBoost</span>
+          <Link href="/" className="inline-flex items-center gap-2">
+            <Image src="/logo.svg" alt="WaitBoost" width={26} height={32} priority />
+            <span className="font-bold text-xl text-white tracking-tight">WaitBoost</span>
           </Link>
         </div>
         <div className="relative flex-1 flex flex-col justify-center">
@@ -132,9 +133,9 @@ export default function SignupPage() {
       {/* Right form panel */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
         <div className="lg:hidden mb-8 text-center">
-          <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl">
-            <span>⚡</span>
-            <span className="gradient-text">WaitBoost</span>
+          <Link href="/" className="inline-flex items-center gap-2">
+            <Image src="/logo.svg" alt="WaitBoost" width={26} height={32} priority />
+            <span className="font-bold text-xl text-slate-900 tracking-tight">WaitBoost</span>
           </Link>
         </div>
         <div className="w-full max-w-[400px]">
