@@ -165,6 +165,24 @@ export default function ProjectSettingsPage() {
         </div>
       )}
 
+      {/* Invalid slug warning */}
+      {project && /[:/\\]/.test(project.slug) && (
+        <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <p className="text-sm font-semibold text-amber-800">⚠️ Your waitlist URL is broken</p>
+          <p className="text-xs text-amber-700 mt-1">
+            The slug <span className="font-mono bg-amber-100 px-1 rounded">{project.slug}</span> contains invalid characters (like <code>/</code> or <code>:</code>). This is why &ldquo;Open&rdquo; doesn&apos;t work.
+          </p>
+          <button
+            type="button"
+            onClick={() => setSlug(slugify(project.name))}
+            className="mt-2 text-xs font-semibold text-amber-800 underline underline-offset-2"
+          >
+            Fix it → use &ldquo;{slugify(project.name)}&rdquo;
+          </button>
+          <span className="text-xs text-amber-600 ml-2">(then click Save Changes below)</span>
+        </div>
+      )}
+
       <form onSubmit={handleSave} className="space-y-6">
         {/* Basic settings */}
         <div className="card p-6 space-y-5">
@@ -180,8 +198,9 @@ export default function ProjectSettingsPage() {
             <label className="label">URL slug</label>
             <div className="flex items-center bg-white border border-slate-200 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/10 rounded-lg overflow-hidden transition-all">
               <span className="px-3 py-3 text-slate-400 text-sm border-r border-slate-200 bg-slate-50 whitespace-nowrap">waitboost.com/w/</span>
-              <input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} required
-                className="flex-1 bg-transparent px-3 py-3 text-sm text-slate-900 outline-none" />
+              <input type="text" value={slug} onChange={(e) => setSlug(slugify(e.target.value))} required
+                className="flex-1 bg-transparent px-3 py-3 text-sm text-slate-900 outline-none"
+                placeholder="my-waitlist" />
             </div>
           </div>
 

@@ -166,7 +166,7 @@ export default function NewProjectPage() {
                 <input
                   type="text"
                   value={slug}
-                  onChange={(e) => { setSlug(e.target.value); setSlugEdited(true); }}
+                  onChange={(e) => { setSlug(slugify(e.target.value)); setSlugEdited(true); }}
                   required
                   className="flex-1 bg-transparent px-3 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none"
                   placeholder="my-awesome-app"
