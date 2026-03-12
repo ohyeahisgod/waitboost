@@ -174,7 +174,7 @@ export default async function DashboardPage({
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-              Welcome back{firstName ? `, ${firstName}` : ''} 👋
+              Welcome back{firstName ? `, ${firstName}` : ''}
             </h1>
             <p className="text-slate-500 text-sm mt-1">Let&apos;s grow your waitlists.</p>
           </div>
